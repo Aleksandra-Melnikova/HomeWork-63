@@ -1,0 +1,38 @@
+.name {
+  text-decoration: none;
+}
+.phone {
+  background: url("./assets/Phone-ic.png") top 20% center/50% auto no-repeat;
+  width: 200px;
+  height: 500px;
+  padding-top: 350px;
+  text-align: center;
+}
+.adress {
+  background: url("./assets/adress-ic.png") top 20% center/50% auto no-repeat;
+  width: 200px;
+  height: 500px;
+  padding-top: 350px;
+  text-align: center;
+}
+.mail {
+  background: url("./assets/e-mail.png") top 25% center/50% auto no-repeat;
+  width: 200px;
+  height: 500px;
+  padding-top: 350px;
+  text-align: center;
+}
+.footer {
+  height: 100px;
+  margin-top: auto;
+}
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 75vh;
+}
