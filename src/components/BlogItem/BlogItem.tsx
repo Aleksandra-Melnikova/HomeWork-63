@@ -1,10 +1,6 @@
 import React from "react";
-interface IPost {
-  title: string;
-  id: string;
-  description: string;
-  datetime: string;
-}
+import { IPost } from '../../types';
+
 
 
 const BlogItem: React.FC<IPost> = ({
@@ -14,17 +10,15 @@ const BlogItem: React.FC<IPost> = ({
 }) => {
   return (
     <div id={id} className="border bg-light rounded mb-3 p-3 ">
-      <div className="mb-2 pb-1 border-bottom">
-        <span>
-          <span className="text-primary">{title}</span>
-        </span>
+      <div className="mb-3 pb-1">
+          <span className="text-dark fs-2 text-start mb-3 d-block">{title}</span>
         <div>
-          <strong> Created on: </strong>
-          <span>{datetime}</span>
+          <strong className='fs-5 text-body fw-light me-2'> Created on: </strong>
+          <span className='fs-5 text-body fw-light'>{datetime}</span>
         </div>
       </div>
-      <div className="pb-1">
-    <button type='button' className='btn btn-outline-light'> Read more</button>
+      <div>
+        <button type="button" className="btn btn-secondary d-block btn-read-more text-start px-4 py-2"> Read more</button>
       </div>
     </div>
   );

@@ -36,3 +36,19 @@
   flex-direction: column;
   min-height: 75vh;
 }
+.form-add-new-post{
+  margin-top: 100px;
+  height: 43vh;
+}
+
+.text-area {
+  height: 12vh;
+  width: 100%;
+}
+
+.btn-read-more{
+  margin: 10px auto;
+  width: 170px;
+  padding: 10px 50px 10px;
+background: url('././assets/ic- arr.png') center right 10%/20% auto no-repeat;
+}

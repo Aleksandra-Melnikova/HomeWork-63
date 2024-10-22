@@ -1,96 +1,71 @@
-import React, { useEffect, useState } from "react";
-import { IInputMessage } from "../../types";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import React, {useState } from 'react';
+import axiosAPI from '../../axiosAPI.ts';
 
 const FormAddNewPost = () => {
-  const url = "http://146.185.154.90:8000/messages";
-  const [inputMessage, setInputMessage] = useState<IInputMessage>({
-    name: "",
-    message: "",
-  });
-  const [buttonClicked, setButtonClicked] = useState(false);
 
-  const changeInputMessage = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    setInputMessage((prevState) => {
-      return {
-        ...prevState,
-        [e.target.name]: e.target.value,
-      };
-    });
-  };
-
-  const submitForm = (e: React.FormEvent) => {
+  const initialPost = {
+    title: '',
+    postMessage:''};
+  const [post, setPost] = useState(initialPost);
+  const onSubmit = async (e:React.FormEvent) => {
     e.preventDefault();
-
-    if (
-      inputMessage.name.trim().length > 0 &&
-      inputMessage.message.trim().length > 0
-    ) {
-      setInputMessage({
-        ...inputMessage,
-        name: inputMessage.name,
-        message: inputMessage.message,
-      });
-      setButtonClicked((prevState) => !prevState);
-    } else {
-      alert("Поле не должно быть пустым");
-    }
-  };
-  useEffect(() => {
-    const postNewMessage = async () => {
-      const data = new URLSearchParams();
-      if (
-        inputMessage.name.trim().length > 0 &&
-        inputMessage.message.trim().length > 0
-      ) {
-        data.set("message", inputMessage.message);
-        data.set("author", inputMessage.name);
-
-        await fetch(url, {
-          method: "post",
-          body: data,
-        });
-      }
+    if(post.title.trim().length>0 && post.postMessage.length>0) {  const data = {
+      post:{...post},
+      datetime: new Date().toISOString(),
     };
-    postNewMessage().catch((e) => console.error(e));
-    setInputMessage({
-      name: "",
-      message: "",
-    });
-  }, [buttonClicked]);
+      await axiosAPI.post('data.json', data);
+      console.log(data);
+      setPost(initialPost);}
+    else {
+      alert('Fill in all fields');
+    }
+
+  };
+  const onChangeField = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
+const {name, value} = e.target;
+setPost(prevState => {
+  return {
+    ...prevState,
+    [name]: value,
+  };
+});
+  };
 
   return (
-    <div className="mb-3">
-      <Form onSubmit={submitForm}>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label column={"lg"}> Your name</Form.Label>
-          <Form.Control
-            name="name"
-            type="text"
-            placeholder="Enter your name"
-            value={inputMessage.name}
-            onChange={changeInputMessage}
+<div className='form-add-new-post p-5 border border-black-200 rounded-3 fs-5'>
+
+
+      <form onSubmit={onSubmit}>
+        <div className="mb-3">
+          <label htmlFor='title' className='form-label'> Title</label>
+          <input className="mb-3 form-control"
+                 id='title'
+                 name="title"
+                 type="text"
+                 placeholder="Title"
+                 value={post.title}
+                 onChange={onChangeField}
+                 required
           />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-          <Form.Label column={"lg"}>Your message:</Form.Label>
-          <Form.Control
-            name="message"
-            type="text"
-            value={inputMessage.message}
-            onChange={changeInputMessage}
-            as="textarea"
-            rows={3}
+
+        </div>
+        <div className="mb-3 col">
+          <label  htmlFor='postMessage' className='form-label d-block'>Text of post:</label>
+          <textarea className='text-area mt-2 border border-black-200 rounded-3'
+            id='postMessage'
+            name="postMessage"
+                    value={post.postMessage}
+                    onChange={onChangeField}
+                    required
           />
-        </Form.Group>
-        <Button className="ps-4 pe-4" variant="primary" type="submit">
-          Send
-        </Button>{" "}
-      </Form>
-    </div>
+        </div>
+        <button className="ps-4 pe-4 btn btn-dark" type="submit">
+          Save
+        </button>
+        {" "}
+      </form>
+</div>
+
   );
 };
 
