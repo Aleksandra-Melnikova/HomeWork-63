@@ -12,3 +12,12 @@ export interface IGetPost {
     title: string;
   }
 }
+
+export interface IPostMutation {
+  title: string;
+  id: string;
+  datetime: string;
+}
+ export interface IDataApi {
+  [id: string]: IGetPost;
+ }

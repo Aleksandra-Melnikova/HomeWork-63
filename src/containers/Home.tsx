@@ -1,18 +1,30 @@
+
+import { IPost, IPostMutation } from '../types';
+import BlogItems from '../components/BlogItems/BlogItems.tsx';
 import { useCallback, useEffect, useState } from 'react';
-import { IPost } from '../types';
 import axiosAPI from '../axiosAPI.ts';
-import BlogItem from '../components/BlogItem/BlogItem.tsx';
+interface HomeProps {
+  onClick: (post:IPostMutation) => void;
+  onEdit: (post:IPostMutation) => void;
+}
 
 
-const Home = () => {
+const Home:React.FC<HomeProps> = ({onClick, onEdit}) => {
+
   const [posts, setPosts] = useState<IPost[]>([
   ]);
+  // const params = useParams();
+// console.log(params);
+
+
+
+
 
   const fetchData = useCallback(async () => {
     const responseRequest: { data: IPost } = await axiosAPI<IPost>('data.json');
     const countryResponse = responseRequest.data;
     const countryResponseNew = Object.entries(countryResponse);
-     const array:IPost[] = [];
+    const array:IPost[] = [];
     for( let i = 0; i<countryResponseNew.length; i++ ) {
       const obj:IPost = {
         id: countryResponseNew[i][0],
@@ -36,9 +48,9 @@ const Home = () => {
 
   return (
     <>
-      {posts.length > 0 ? <>{posts.map((post: IPost) => (
-        <BlogItem key={post.id} datetime={post.datetime} title={post.title} id={''} postMessage={''}/>
-      ))}</> : <div className='container text-center fs-3 m-auto'>
+      {posts.length > 0 ?
+        <BlogItems onEdit={onEdit} posts={posts} onClick={onClick} />
+       : <div className='container text-center fs-3 m-auto'>
         There are no posts yet, add a new one, tell us what new happened to you.
       </div>}
 
