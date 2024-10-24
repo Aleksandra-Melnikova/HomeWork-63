@@ -1,68 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { IGetPost } from '../types';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { IGetPost, IPostForm } from '../types';
 import axiosAPI from '../axiosAPI.ts';
 import FormAddNewPost from '../components/FormAddNewPost/FormAddNewPost.tsx';
 
-const EditPost = () => { const params = useParams();
-  const initialPost = {
-    title: '',
-    postMessage:''};
-  const [post, setPost] = useState(initialPost);
-  const onSubmitEdit = async (e:React.FormEvent) => {
-    e.preventDefault();
-    if(post.title.trim().length>0 && post.postMessage.length>0) {  const data = {
-      post:{...post},
-      datetime: new Date().toISOString(),
-    };
-      await axiosAPI.put('data/' + params.id + '.json', data);
-      console.log(data);
-      setPost(initialPost);}
-    else {
-      alert('Fill in all fields');
-    }
+function Spinner() {
+  return null;
+}
 
-  };
-  const onChangeField = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>)=>{
-    const {name, value} = e.target;
-    setPost(prevState => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
-    });
-  };
-  const [getData, setGetData] = useState<IGetPost>({
-    datetime: '',
-    post:{
-      postMessage: '',
-      title: '',
-    }
-  });
+const EditPost = () => {
+  const [post, setPost] = useState<IPostForm>();
+  const params = useParams();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState<boolean>(false);
 
+  const fetchOnePost= useCallback(async (id:string) => {
+    try{
+      setLoading(true);
+      const response: { data: IGetPost } = await axiosAPI<IGetPost>('data/' + id + '.json');
+      console.log(response.data);
+
+      if (response.data){
+        const obj:IPostForm = {
+          title: response.data.post.title,
+          postMessage: response.data.post.postMessage,
+        };
+        setPost(obj);
+      }
+
+    }
+    catch (e) {
+      console.error(e);
+    }
+    finally {
+      setLoading(false);
+    }
+  },[]);
 
 
   useEffect(() => {
-    const fetchData = (async () => {
-      const responseRequest = await axiosAPI<IGetPost>('data/' + params.id + '.json');
-      const newResponse = responseRequest.data;
-      console.log(newResponse);
-      setGetData(newResponse);
-      // setGetData((prevState:IDataApi => [...prevState, newResponse]);
-    });
-    void fetchData();
-  }, [params.id]);
-  console.log(getData);
+    if (params.id){
+      void fetchOnePost(params.id);
+    }
+    console.log(params.id);
+  }, [params.id,fetchOnePost]);
+  console.log(post);
+
+
+  const submitForm = async (post:IGetPost)=>{
+    try{
+      if(params.id){
+        setLoading(true);
+        await axiosAPI.put('data/' + params.id + '.json', {...post});
+        navigate('/');
+      }
+    }
+    catch (e){
+console.error(e);
+    }
+    finally {
+      setLoading(false);
+    }
+
+
+  };
+
 
   return (
-    <div>
-      <div>
-
-        <FormAddNewPost titleBtn='delete' postMessage={getData.post.postMessage} title={getData.post.title}
-                        onSubmit={onSubmitEdit} onChangeField={onChangeField}/>
-
-      </div>
-    </div>
+    <>
+      {loading ? <Spinner/>:
+        <>
+      {post? <><FormAddNewPost submitForm={submitForm} formToOnePost={post} title='Edit'/></>:null}
+        </>
+      }
+        </>
   );
 };
 

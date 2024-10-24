@@ -19,5 +19,9 @@ export interface IPostMutation {
   datetime: string;
 }
  export interface IDataApi {
-  [id: string]: IGetPost;
+  [id: string]: IPost;
+ }
+ export interface IPostForm {
+   title: string,
+   postMessage:string
  }

@@ -1,44 +1,43 @@
 
 import FormAddNewPost from '../components/FormAddNewPost/FormAddNewPost.tsx';
-import { useParams } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import axiosAPI from '../axiosAPI.ts';
-import { IGetPost } from '../types';
+import { IGetPost, IPostForm } from '../types';
 
 const FullPost = () => {
   const params = useParams();
-  const [getData, setGetData] = useState<IGetPost>({
-    datetime: '',
-    post:{
-      postMessage: '',
-      title: '',
+
+
+  const [post, setPost] = useState<IPostForm>();
+  const fetchOnePost= useCallback(async (id:string) => {
+    const response: { data: IGetPost } = await axiosAPI<IGetPost>('data/' + id + '.json');
+    console.log(response.data);
+
+    if (response.data){
+      const obj:IPostForm = {
+        title: response.data.post.title,
+        postMessage: response.data.post.postMessage,
+      };
+      setPost(obj);
     }
-  });
-
-
-
+  },[]);
 
   useEffect(() => {
-    const fetchData = (async () => {
-      const responseRequest = await axiosAPI<IGetPost>('data/' + params.id + '.json');
-      const newResponse = responseRequest.data;
-      console.log(newResponse);
-      setGetData(newResponse);
-      // setGetData((prevState:IDataApi => [...prevState, newResponse]);
-    });
-    void fetchData();
-  }, [params.id]);
-  console.log(getData);
+    if (params.id){
+      void fetchOnePost(params.id);
+    }
+    console.log(params.id);
+  }, [params.id,fetchOnePost]);
+  console.log(post);
+  const navigateHome = useNavigate();
 
-  const onSubmit = async (e:React.FormEvent) => {
-    e.preventDefault();
-      await axiosAPI.delete('data/' + params.id + '.json');
-      setGetData({
-        datetime: '',
-        post: {
-          postMessage: '',
-          title: '',
-        }});
+
+  const submitForm = async ()=>{
+    if(params.id){
+      await axiosAPI.delete('data/' + params.id + '.json', );
+      navigateHome('/');
+    }
 
   };
 
@@ -46,8 +45,10 @@ const FullPost = () => {
     <div>
       <div>
 
-        <FormAddNewPost titleBtn='delete' postMessage={getData.post.postMessage} title={getData.post.title}
-                        onSubmit={onSubmit}/>
+        <FormAddNewPost title='delete'
+                        formToOnePost={post}
+                        submitForm={submitForm}
+        />
 
       </div>
     </div>
