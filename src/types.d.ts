@@ -7,10 +7,10 @@ export interface IPost {
 
 export interface IGetPost {
   datetime: string;
-  post:{
+  post: {
     postMessage: string;
     title: string;
-  }
+  };
 }
 
 export interface IPostMutation {
@@ -18,10 +18,8 @@ export interface IPostMutation {
   id: string;
   datetime: string;
 }
- export interface IDataApi {
-  [id: string]: IPost;
- }
- export interface IPostForm {
-   title: string,
-   postMessage:string
- }
+
+export interface IPostForm {
+  title: string;
+  postMessage: string;
+}

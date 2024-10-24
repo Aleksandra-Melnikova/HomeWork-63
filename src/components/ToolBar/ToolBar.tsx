@@ -7,9 +7,7 @@ const ToolBar = () => {
       <nav className="navbar navbar-expand-lg bg-dark p-4">
         <div className="container px-4">
           <NavLink className="name" to="/posts">
-            <span className=" navbar-brand mb-0 text-white fs-2 ">
-              My blog
-            </span>
+            <span className=" navbar-brand mb-0 text-white fs-2 ">My blog</span>
           </NavLink>
           <div className="ms-auto">
             <ul className="navbar-nav">
@@ -33,7 +31,6 @@ const ToolBar = () => {
                   Contacts
                 </NavLink>
               </li>
-
             </ul>
           </div>
         </div>

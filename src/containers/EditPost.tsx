@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IGetPost, IPostForm } from '../types';
-import axiosAPI from '../axiosAPI.ts';
-import FormAddNewPost from '../components/FormAddNewPost/FormAddNewPost.tsx';
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { IGetPost, IPostForm } from "../types";
+import axiosAPI from "../axiosAPI.ts";
+import FormAddNewPost from "../components/FormAddNewPost/FormAddNewPost.tsx";
 
 function Spinner() {
   return null;
@@ -14,66 +14,65 @@ const EditPost = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchOnePost= useCallback(async (id:string) => {
-    try{
+  const fetchOnePost = useCallback(async (id: string) => {
+    try {
       setLoading(true);
-      const response: { data: IGetPost } = await axiosAPI<IGetPost>('data/' + id + '.json');
-      console.log(response.data);
+      const response: { data: IGetPost } = await axiosAPI<IGetPost>(
+        "data/" + id + ".json",
+      );
 
-      if (response.data){
-        const obj:IPostForm = {
+      if (response.data) {
+        const obj: IPostForm = {
           title: response.data.post.title,
           postMessage: response.data.post.postMessage,
         };
         setPost(obj);
       }
-
-    }
-    catch (e) {
+    } catch (e) {
       console.error(e);
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
-  },[]);
-
+  }, []);
 
   useEffect(() => {
-    if (params.id){
+    if (params.id) {
       void fetchOnePost(params.id);
     }
-    console.log(params.id);
-  }, [params.id,fetchOnePost]);
-  console.log(post);
+  }, [params.id, fetchOnePost]);
 
-
-  const submitForm = async (post:IGetPost)=>{
-    try{
-      if(params.id){
+  const submitForm = async (post: IGetPost) => {
+    try {
+      if (params.id) {
         setLoading(true);
-        await axiosAPI.put('data/' + params.id + '.json', {...post});
-        navigate('/');
+        await axiosAPI.put("data/" + params.id + ".json", { ...post });
+        navigate("/");
       }
-    }
-    catch (e){
-console.error(e);
-    }
-    finally {
+    } catch (e) {
+      console.error(e);
+    } finally {
       setLoading(false);
     }
-
-
   };
-
 
   return (
     <>
-      {loading ? <Spinner/>:
+      {loading ? (
+        <Spinner />
+      ) : (
         <>
-      {post? <><FormAddNewPost submitForm={submitForm} formToOnePost={post} title='Edit'/></>:null}
+          {post ? (
+            <>
+              <FormAddNewPost
+                submitForm={submitForm}
+                formToOnePost={post}
+                title="Edit"
+              />
+            </>
+          ) : null}
         </>
-      }
-        </>
+      )}
+    </>
   );
 };
 
