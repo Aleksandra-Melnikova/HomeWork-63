@@ -1,8 +1,8 @@
-import FormAddNewPost from "../components/FormAddNewPost/FormAddNewPost.tsx";
-import { IGetPost } from "../types";
-import axiosAPI from "../axiosAPI.ts";
+import FormAddNewPost from "../../components/FormAddNewPost/FormAddNewPost.tsx";
+import { IGetPost } from "../../types";
+import axiosAPI from "../../axiosAPI.ts";
 import { useState } from "react";
-import Spinner from "../components/UI/Spinner/Spinner.tsx";
+import Spinner from "../../components/UI/Spinner/Spinner.tsx";
 import { useNavigate } from "react-router-dom";
 
 const Add = () => {

@@ -23,3 +23,8 @@ export interface IPostForm {
   title: string;
   postMessage: string;
 }
+export interface IFullPost {
+  title: string;
+  postMessage: string;
+  datetime: string;
+}

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { IGetPost, IPostForm } from "../types";
-import axiosAPI from "../axiosAPI.ts";
-import FormAddNewPost from "../components/FormAddNewPost/FormAddNewPost.tsx";
+import { IGetPost, IPostForm } from "../../types";
+import axiosAPI from "../../axiosAPI.ts";
+import FormAddNewPost from "../../components/FormAddNewPost/FormAddNewPost.tsx";
 
 function Spinner() {
   return null;

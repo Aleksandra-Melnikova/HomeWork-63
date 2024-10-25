@@ -1,6 +1,6 @@
-import NSTU from "../assets/NSTU.jpg";
-import Novosibirsk from "../assets/Novosibirsk.jpg";
-import Photo from "../assets/Photo.jpg";
+import NSTU from "../../assets/NSTU.jpg";
+import Novosibirsk from "../../assets/Novosibirsk.jpg";
+import Photo from "../../assets/Photo.jpg";
 
 const AboutMe = () => {
   return (

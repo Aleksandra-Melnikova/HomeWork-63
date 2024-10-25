@@ -1,8 +1,8 @@
-import { IPost, IPostMutation } from "../types";
-import BlogItems from "../components/BlogItems/BlogItems.tsx";
+import { IPost, IPostMutation } from "../../types";
+import BlogItems from "../../components/BlogItems/BlogItems.tsx";
 import { useCallback, useEffect, useState } from "react";
-import axiosAPI from "../axiosAPI.ts";
-import Spinner from "../components/UI/Spinner/Spinner.tsx";
+import axiosAPI from "../../axiosAPI.ts";
+import Spinner from "../../components/UI/Spinner/Spinner.tsx";
 interface HomeProps {
   onClick: (post: IPostMutation) => void;
   onEdit: (post: IPostMutation) => void;

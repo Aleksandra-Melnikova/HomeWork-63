@@ -1,14 +1,14 @@
 import "./App.css";
 
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Home from "./containers/Home";
-import AboutMe from "./containers/AboutMe";
-import Contacts from "./containers/Contacts";
-import Add from "./containers/Add";
+import Home from "./containers/Home/Home.tsx";
+import AboutMe from "./containers/AboutMe/AboutMe.tsx";
+import Contacts from "./containers/Contcts/Contacts.tsx";
+import Add from "./containers/Add/Add.tsx";
 import ToolBar from "./components/ToolBar/ToolBar.tsx";
 import { IPostMutation } from "./types";
-import FullPost from "./containers/FullPost.tsx";
-import EditPost from "./containers/EditPost.tsx";
+import FullPost from "./containers/FullPost/FullPost.tsx";
+import EditPost from "./containers/EditPost/EditPost.tsx";
 
 const App = () => {
   const navigate = useNavigate();
